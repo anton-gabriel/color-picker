@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Color Picker"
-        Height="250"
+        Height="280"
         Width="400">
 
     <Window.InputBindings>
@@ -15,6 +15,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -39,8 +40,7 @@
                         Text="RGB: "/>
 
                     <TextBox
-                        Text="{Binding Color.RGB, Mode=OneWay}"
-                        IsReadOnly="True"/>
+                        Text="{Binding RGB, Mode=TwoWay}"/>
                 </StackPanel>
 
                 <StackPanel
@@ -48,21 +48,23 @@
                     <TextBlock
                         Text="Hex: "/>
                     <TextBox
-                        Text="{Binding Color.HEX, Mode=OneWay}"
-                        IsReadOnly="True"/>
+                        Text="{Binding HEX, Mode=TwoWay}"/>
 
                 </StackPanel>
-
-                <Border
-                    BorderBrush="Black"
-                    BorderThickness="1"
-                    Margin="10"
-                    Width="50"
-                    Height="50">
-                    <Rectangle
-                        Fill="{Binding Brush, Mode=OneWay}"/>
-                </Border>
             </StackPanel>
+        </Grid>
+
+        <Grid
+            Grid.Row="2"
+            Background="{Binding Brush, Mode=OneWay}">
+            <Border
+                BorderThickness="10"
+                BorderBrush="White"
+                Width="50"
+                Height="50">
+                <Rectangle
+                    Fill="{Binding Brush, Mode=OneWay}"/>
+            </Border>
         </Grid>
 
     </Grid>

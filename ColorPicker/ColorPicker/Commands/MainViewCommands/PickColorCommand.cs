@@ -1,7 +1,4 @@
-﻿using ColorPicker.Model;
-using ColorPicker.ViewModel;
-using System.Drawing;
-using System.Windows.Forms;
+﻿using ColorPicker.ViewModel;
 
 namespace ColorPicker.Commands.MainViewCommands
 {
@@ -24,12 +21,13 @@ namespace ColorPicker.Commands.MainViewCommands
         #region Private methods
         private void PickColor()
         {
-            using var bitmap = new Bitmap(1, 1);
-            using (var graphics = Graphics.FromImage(bitmap))
+            using var bitmap = new System.Drawing.Bitmap(1, 1);
+            using (var graphics = System.Drawing.Graphics.FromImage(bitmap))
             {
-                graphics.CopyFromScreen(Cursor.Position, new Point(0, 0), new Size(1, 1));
+                graphics.CopyFromScreen(System.Windows.Forms.Cursor.Position, new System.Drawing.Point(0, 0), new System.Drawing.Size(1, 1));
             }
-            MainViewModel.Color = new ColorInfo(bitmap.GetPixel(0, 0));
+            var color = bitmap.GetPixel(0, 0);
+            MainViewModel.Color = System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B);
         }
         #endregion
     }

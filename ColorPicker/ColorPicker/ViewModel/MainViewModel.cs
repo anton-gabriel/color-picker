@@ -1,7 +1,5 @@
 ﻿using ColorPicker.Commands.MainViewCommands;
-using ColorPicker.Model;
-using System.Windows.Input;
-using System.Windows.Media;
+using System.Linq;
 
 namespace ColorPicker.ViewModel
 {
@@ -16,32 +14,69 @@ namespace ColorPicker.ViewModel
         #endregion
 
         #region Private fields
-        private ColorInfo color;
+        private System.Windows.Media.Color color;
         #endregion
 
         #region Properties
-        public ColorInfo Color
+        public System.Windows.Media.Color Color
         {
             get => color;
             set
             {
                 color = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(HEX));
+                OnPropertyChanged(nameof(RGB));
                 OnPropertyChanged(nameof(Brush));
             }
         }
-        public Brush Brush
+        public System.Windows.Media.Brush Brush
         {
             get
             {
-                (byte r, byte g, byte b) = Color.RGBComponents;
-                return new SolidColorBrush(System.Windows.Media.Color.FromRgb(r, g, b));
+                if (Color != null)
+                {
+                    (byte r, byte g, byte b) = (Color.R, Color.G, Color.B);
+                    return new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(r, g, b));
+                }
+                return System.Windows.Media.Brushes.Transparent;
+            }
+        }
+        public string RGB
+        {
+            get => $"{Color.R}, {Color.G}, {Color.B}";
+            set
+            {
+                try
+                {
+                    var values = value
+                        .Split(',')
+                        .Select(value => byte.Parse(value))
+                        .ToList();
+                    Color = System.Windows.Media.Color.FromRgb(values[0], values[1], values[2]);
+                }
+                catch
+                {
+                }
+            }
+        }
+        public string HEX
+        {
+            get => string.Format("{0:X2}{1:X2}{2:X2}", Color.R, Color.G, Color.B);
+            set
+            {
+                try
+                {
+                    Color = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString($"#{value}");
+                }
+                catch
+                {
+                }
             }
         }
         #endregion
 
         #region Commands
-        public ICommand PickColorCommand { get; private set; }
+        public System.Windows.Input.ICommand PickColorCommand { get; private set; }
         #endregion
     }
 }
