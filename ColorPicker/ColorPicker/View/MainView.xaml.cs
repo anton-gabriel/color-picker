@@ -13,7 +13,6 @@ namespace ColorPicker.View
             InitializeComponent();
             DataContext = new MainViewModel();
             Topmost = true;
-
         }
     }
 }
